@@ -22,6 +22,9 @@ public class Member extends BaseWriterEntity {
 
     private int age;
 
+    @OneToMany(mappedBy = "member")
+    List<Orders> ordersList = new ArrayList<>();
+
     @Embedded
     private Address address;
 
