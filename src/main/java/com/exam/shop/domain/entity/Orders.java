@@ -35,6 +35,10 @@ public class Orders extends BaseTimeEntity {
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
+    //itemMapping
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    private List<OrdersItem> ordersItemList = new ArrayList<>();
+
     //연관 관계 편의 메소드(member).
     public void setMember(Member member) {
         this.member = member;
