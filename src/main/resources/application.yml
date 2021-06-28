@@ -11,13 +11,17 @@ spring:
         rewriteBatchedStatements: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         jdbc.batch_size: 1000
         order_inserts: true
         format_sql: true
 #        show_sql: true
+  data:
+    web:
+      pageable:
+        max-page-size: 20
 
 logging.level:
   org.hibernate.SQL: debug

@@ -24,6 +24,41 @@
                 <td th:text="${member.zipcode}"></td>
             </tr>
             </tbody> </table>
+        <!--pagination start-->
+        <nav style="text-align: center;" aria-label="Page navigation example ">
+            <ul class="pagination"
+                th:with="start=${T(Math).floor(pageable.getPageNumber()/pageable.getPageSize())*pageable.getPageSize() + 1},
+                    last=(${start + pageable.getPageSize() < total ? start + pageable.getPageSize() : total})">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/members(page=0)}" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:class="${pageable.first()} ? 'disabled'" >
+                    <a class="page-link" th:href="${pageable.first()} ? '#' : @{/members(${pageable.first().getPageNumber()})}" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == pageable.getPageNumber() + 1} ? 'active'">
+                    <a class="page-link" th:text="${page}" th:href="@{/members(page=${page}-1)}"></a>
+                </li>
+
+                <li class="page-item" th:class="${hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="${hasNext} ? '#' : @{/members(page=${pageable.getPageNumber() + 2})}" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/members(page=${total}-1)}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!--pagination end-->
     </div>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->

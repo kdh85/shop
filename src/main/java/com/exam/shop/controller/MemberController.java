@@ -1,10 +1,13 @@
 package com.exam.shop.controller;
 
-import com.exam.shop.domain.search.MemberSearchCondition;
+import com.exam.shop.domain.dto.MemberDto;
 import com.exam.shop.domain.dto.MemberForm;
+import com.exam.shop.domain.search.MemberSearchCondition;
 import com.exam.shop.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,9 +41,12 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public String memberList(Model model, MemberSearchCondition condition, Pageable pageable){
-
-        model.addAttribute("members",memberService.findMemberByCondition(condition, pageable));
+    public String memberList(Model model, MemberSearchCondition condition,@PageableDefault(size = 20) Pageable pageable){
+        Page<MemberDto> memberByCondition = memberService.findMemberByCondition(condition, pageable);
+        model.addAttribute("members", memberByCondition);
+        model.addAttribute("pageable",pageable);
+        model.addAttribute("total",memberByCondition.getTotalPages());
+        model.addAttribute("hasNext",memberByCondition.hasNext());
         return "members/memberList";
     }
 }

@@ -32,6 +32,7 @@ public class MemberService {
     }
 
     public Page<MemberDto> findMemberByCondition(MemberSearchCondition condition, Pageable pageable) {
+        //pageable = PageRequest.of((int) pageable.getOffset(), pageable.getPageSize(), Sort.by("id").ascending());
         return memberRepository.findMemberByCondition(condition, pageable);
     }
 }
