@@ -32,7 +32,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .select(
                         new QMemberDto(
                                 member.id,
-                                member.username,
+                                member.username.as("name"),
                                 member.address.city,
                                 member.address.street,
                                 member.address.zipcode
@@ -61,6 +61,24 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
         return PageableExecutionUtils.getPage(content,pageable,count::fetchCount);
 
+    }
+
+    @Override
+    public List<MemberDto> findAllMembers() {
+        List<MemberDto> fetch = queryFactory
+                .select(
+                        new QMemberDto(
+                                member.id,
+                                member.username.as("name"),
+                                member.address.city,
+                                member.address.street,
+                                member.address.zipcode
+                        )
+                )
+                .from(member)
+                .orderBy(member.id.asc())
+                .fetch();
+        return fetch;
     }
 
     private BooleanExpression zipcodeLike(String zipcode) {

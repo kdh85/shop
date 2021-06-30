@@ -12,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -37,5 +40,13 @@ public class MemberService {
     public Page<MemberDto> findMemberByCondition(MemberSearchCondition condition, Pageable pageable) {
         //pageable = PageRequest.of((int) pageable.getOffset(), pageable.getPageSize(), Sort.by("id").ascending());
         return memberRepository.findMemberByCondition(condition, pageable);
+    }
+
+    public List<MemberDto> findAllMembers() {
+        return memberRepository.findAllMembers();
+    }
+
+    public Optional<Member> findById(long id) {
+        return memberRepository.findById(id);
     }
 }
