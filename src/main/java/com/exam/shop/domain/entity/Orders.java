@@ -4,6 +4,7 @@ import com.exam.shop.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +32,36 @@ public class Orders extends BaseTimeEntity {
     private OrderStatus orderStatus;
 
     //Delivery
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     //itemMapping
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrdersItem> ordersItemList = new ArrayList<>();
+
+    private LocalDateTime orderDateTime;
+
+    public static Orders createOrderWithItems(Member member, OrderStatus status, OrdersItem... ordersItem) {
+        Orders newOrder = new Orders();
+        newOrder.setMember(member);
+        newOrder.setOrderStatus(status);
+        newOrder.setDelivery(Delivery.makeDelivery(member.getAddress(), DeliveryStatus.SEND));
+
+        for (OrdersItem items : ordersItem) {
+            newOrder.addOrderItem(items);
+        }
+
+        newOrder.setOrderStatus(OrderStatus.COMPLETE);
+        newOrder.setOrderDateTime(LocalDateTime.now());
+        return newOrder;
+    }
+
+    //연관관계 편의 메소드.
+    private void addOrderItem(OrdersItem items) {
+        ordersItemList.add(items);
+        items.setOrders(this);
+    }
 
     //연관 관계 편의 메소드(member).
     public void setMember(Member member) {

@@ -37,6 +37,7 @@ public class OrdersItem {
         newOrdersItem.setOrderPrice(orderPrice);
         newOrdersItem.setOrderQuantity(orderQuantity);
 
+        item.removeQuantity(orderQuantity);
         return newOrdersItem;
     }
 }

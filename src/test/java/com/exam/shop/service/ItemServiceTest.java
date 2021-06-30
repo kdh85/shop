@@ -1,11 +1,14 @@
 package com.exam.shop.service;
 
+import com.exam.shop.domain.dto.ItemDto;
 import com.exam.shop.domain.dto.ItemForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,5 +53,11 @@ class ItemServiceTest {
         assertThat(findItem.getStockQuantity()).isEqualTo(50);
         assertThat(findItem.getAuthor()).isEqualTo("aaaa");
         assertThat(findItem.getIsbn()).isEqualTo("isbn0002");
+    }
+
+    @Test
+    void findAllItemsTest() {
+        List<ItemDto> allItems = itemService.findAllItems();
+        assertThat(allItems.size()).isEqualTo(1);
     }
 }

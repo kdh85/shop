@@ -39,6 +39,22 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom{
         return results;
     }
 
+    @Override
+    public List<ItemDto> findAllByBook() {
+        List<ItemDto> results = queryFactory
+                .select(new QItemDto(
+                        book.id,
+                        book.itemName.as("name"),
+                        book.price,
+                        book.quantity,
+                        book.author,
+                        book.isbn
+                ))
+                .from(book)
+                .fetch();
+        return results;
+    }
+
     private BooleanExpression itemNameEq(String itemName) {
         return StringUtils.hasText(itemName) ? book.itemName.eq(itemName) : null;
     }

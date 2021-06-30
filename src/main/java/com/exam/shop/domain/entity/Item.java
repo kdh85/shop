@@ -1,5 +1,6 @@
 package com.exam.shop.domain.entity;
 
+import com.exam.shop.exception.NotEnoughStockException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,14 @@ public abstract class Item {
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
     private List<OrdersItem> ordersItemList = new ArrayList<>();
+
+    public void removeQuantity(int orderQuantity){
+        int currentQuantity = this.quantity - orderQuantity;
+
+        if(currentQuantity < 0){
+            throw new NotEnoughStockException("not enought quantity");
+        }
+
+        this.quantity = currentQuantity;
+    }
 }

@@ -10,5 +10,4 @@ public interface ItemRepository extends JpaRepository<Item,Long>, ItemRepository
     Optional<Book> findBookById(Long itemId);
 
     Optional<Book> findBookByItemName(String name);
-
 }

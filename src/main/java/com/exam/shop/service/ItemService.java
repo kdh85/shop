@@ -2,6 +2,7 @@ package com.exam.shop.service;
 
 import com.exam.shop.domain.dto.ItemDto;
 import com.exam.shop.domain.dto.ItemForm;
+import com.exam.shop.domain.entity.Item;
 import com.exam.shop.domain.entity.itemtype.Book;
 import com.exam.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,13 @@ public class ItemService {
 
         Book.updateBook(itemRepository.findBookById(itemId), itemForm);
 
+    }
+
+    public List<ItemDto> findAllItems() {
+        return itemRepository.findAllByBook();
+    }
+
+    public Optional<Item> findById(long itemId) {
+        return itemRepository.findById(itemId);
     }
 }

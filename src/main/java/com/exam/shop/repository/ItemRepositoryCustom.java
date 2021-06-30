@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ItemRepositoryCustom {
     List<ItemDto> findByItemNameList(ItemForm searchItemFrom);
+    List<ItemDto> findAllByBook();
 }
