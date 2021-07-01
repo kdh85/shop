@@ -59,6 +59,6 @@ public class OrdersService {
     }
 
     public List<OrdersDto> searchByCondition(OrderSearchCondition condition){
-        return ordersRepository.searchByCondition(condition);
+        return ordersRepository.searchOrdersWithItems(condition);
     }
 }

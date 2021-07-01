@@ -3,6 +3,7 @@ package com.exam.shop.repository;
 import com.exam.shop.domain.dto.ItemForm;
 import com.exam.shop.domain.dto.OrderSearchCondition;
 import com.exam.shop.domain.dto.OrdersDto;
+import com.exam.shop.domain.dto.OrdersItemDto;
 import com.exam.shop.domain.entity.Member;
 import com.exam.shop.domain.entity.OrderStatus;
 import com.exam.shop.domain.entity.OrdersItem;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +49,7 @@ class OrdersRepositoryImplTest {
     @BeforeEach
     void setUp() {
 
-        memberRepository.save(Member.makeMember("user0",11));
+        memberRepository.save(Member.makeMember("user0", 11));
 
         ItemForm itemForm = new ItemForm();
         itemForm.setName("book1");
@@ -109,5 +112,39 @@ class OrdersRepositoryImplTest {
         }
 
         assertThat(ordersItems).extracting(ordersItem -> ordersItem.getItem().getItemName()).containsExactly("book1");
+    }
+
+    @Test
+    void searchOrderItemDtoTest() {
+        OrderSearchCondition condition = new OrderSearchCondition();
+        condition.setMemberName("user0");
+        condition.setOrderStatus(OrderStatus.COMPLETE);
+
+        List<OrdersDto> ordersDtos = ordersRepository.searchByCondition(condition);
+
+        List<Long> ordersIds = ordersDtos
+                .stream()
+                .map(object -> object.getId())
+                .collect(Collectors.toList());
+
+        List<OrdersItemDto> ordersitems = ordersRepository.searchOrdersItemDto(ordersIds);
+
+        for (OrdersItemDto ordersitem : ordersitems) {
+            System.out.println("ordersitem = " + ordersitem);
+        }
+
+        Map<Long, List<OrdersItemDto>> ordersItemMap = ordersitems
+                .stream()
+                .collect(
+                        Collectors.groupingBy(ordersItemDto -> ordersItemDto.getOrderId()
+                        )
+                );
+
+        ordersDtos.forEach(o->o.setOrderItems(ordersItemMap.get(o.getId())));
+        System.out.println(" ============================================================ ");
+        for(OrdersDto o :  ordersDtos){
+            System.out.println("o = " + o);
+            assertThat(o.getOrderItems()).extracting("itemName").containsExactly("book1");
+        }
     }
 }

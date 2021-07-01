@@ -1,6 +1,7 @@
 package com.exam.shop.controller;
 
 import com.exam.shop.domain.dto.OrderSearchCondition;
+import com.exam.shop.domain.dto.OrdersDto;
 import com.exam.shop.service.ItemService;
 import com.exam.shop.service.MemberService;
 import com.exam.shop.service.OrdersService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,6 +43,13 @@ public class OrdersController {
 
     @GetMapping(value = "/orders")
     public String ordersView(Model model, @ModelAttribute("orderSearch") OrderSearchCondition condition){
+
+        model.addAttribute("orderSearch",condition);
+        List<OrdersDto> ordersDtos = ordersService.searchByCondition(condition);
+        for (OrdersDto ordersDto : ordersDtos) {
+            System.out.println("ordersDto = " + ordersDto);
+        }
+        model.addAttribute("orders",ordersDtos);
 
         return "order/orderList";
     }

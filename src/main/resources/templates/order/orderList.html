@@ -14,7 +14,7 @@
           <select th:field="*{orderStatus}" class="form-control">
             <option value="">주문상태</option>
             <option th:each=
-                            "orderStatus : ${T(jpabook.jpashop.domain.OrderStatus).values()}"
+                            "orderStatus : ${T(com.exam.shop.domain.entity.OrderStatus).values()}"
                     th:value="${orderStatus}"
                     th:text="${orderStatus}">option
             </option>
@@ -37,16 +37,16 @@
       </thead>
       <tbody>
       <tr th:each="item : ${orders}">
-        <td th:text="${item.id}"></td>
-        <td th:text="${item.name}"></td>
-        <td th:text="${item.orderItems[0].item.name}"></td>
-        <td th:text="${item.orderItems[0].orderPrice}"></td>
-        <td th:text="${item.orderItems[0].count}"></td>
-        <td th:text="${item.orderStatus}"></td>
-        <td th:text="${item.orderDate}"></td>
+        <td th:text="${item.getId()}"></td>
+        <td th:text="${item.getName()}"></td>
+        <td th:text="${item.orderItems[0].getItemName()}"></td>
+        <td th:text="${item.orderItems[0].getOrderPrice()}"></td>
+        <td th:text="${item.orderItems[0].getCount()}"></td>
+        <td th:text="${item.getOrderStatus()}"></td>
+        <td th:text="${item.getOrderDate()}"></td>
         <td>
-          <a th:if="${item.orderStatus.name() == 'ORDER'}" href="#"
-             th:href="'javascript:cancel('+${item.id}+')'"
+          <a th:if="${item.getOrderStatus().name() == 'COMPLETE'}" href="#"
+             th:href="'javascript:cancel('+${item.getId()}+')'"
              class="btn btn-danger">CANCEL</a>
         </td>
       </tr>
