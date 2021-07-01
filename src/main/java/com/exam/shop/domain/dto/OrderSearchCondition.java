@@ -11,4 +11,6 @@ public class OrderSearchCondition {
     private String memberName;
 
     private OrderStatus orderStatus;
+
+    private Long orderId;
 }

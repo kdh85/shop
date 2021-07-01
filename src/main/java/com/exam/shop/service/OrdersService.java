@@ -58,7 +58,12 @@ public class OrdersService {
         return ordersItem;
     }
 
-    public List<OrdersDto> searchByCondition(OrderSearchCondition condition){
+    public List<OrdersDto> searchOrdersWithItems(OrderSearchCondition condition){
         return ordersRepository.searchOrdersWithItems(condition);
+    }
+
+    @Transactional
+    public void ordersCancel(Long ordersId) {
+        Optional.ofNullable(ordersRepository.findById(ordersId).get()).get().cancelOrder();
     }
 }

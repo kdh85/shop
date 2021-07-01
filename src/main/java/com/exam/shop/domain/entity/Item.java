@@ -41,4 +41,8 @@ public abstract class Item {
 
         this.quantity = currentQuantity;
     }
+
+    public void addQuantity(int orderQuantity){
+        this.quantity += orderQuantity;
+    }
 }

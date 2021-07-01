@@ -58,4 +58,8 @@ public class ItemService {
     public Optional<Item> findById(long itemId) {
         return itemRepository.findById(itemId);
     }
+
+    public Optional<Book> findByBook(String book) {
+        return itemRepository.findBookByItemName(book);
+    }
 }

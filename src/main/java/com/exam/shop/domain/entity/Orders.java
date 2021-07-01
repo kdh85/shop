@@ -46,7 +46,7 @@ public class Orders extends BaseTimeEntity {
         Orders newOrder = new Orders();
         newOrder.setMember(member);
         newOrder.setOrderStatus(status);
-        newOrder.setDelivery(Delivery.makeDelivery(member.getAddress(), DeliveryStatus.SEND));
+        newOrder.setDelivery(Delivery.makeDelivery(member.getAddress(), DeliveryStatus.WAIT));
 
         for (OrdersItem items : ordersItem) {
             newOrder.addOrderItem(items);
@@ -55,6 +55,14 @@ public class Orders extends BaseTimeEntity {
         newOrder.setOrderStatus(OrderStatus.COMPLETE);
         newOrder.setOrderDateTime(LocalDateTime.now());
         return newOrder;
+    }
+
+    public void cancelOrder() {
+        if(this.delivery.getDeliveryStatus().equals(DeliveryStatus.SEND)){
+            throw new IllegalStateException("배송완료는 취소 불가능.");
+        }
+        this.setOrderStatus(OrderStatus.CANCEL);
+        ordersItemList.forEach(ordersItem -> ordersItem.cancel(ordersItem.getOrderQuantity()));
     }
 
     //연관관계 편의 메소드.
@@ -96,6 +104,5 @@ public class Orders extends BaseTimeEntity {
 
         return newOrder;
     }
-
 
 }

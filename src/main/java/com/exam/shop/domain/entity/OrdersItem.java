@@ -40,4 +40,8 @@ public class OrdersItem {
         item.removeQuantity(orderQuantity);
         return newOrdersItem;
     }
+
+    public void cancel(int orderQuantity) {
+        item.addQuantity(orderQuantity);
+    }
 }

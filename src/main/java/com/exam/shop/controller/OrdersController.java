@@ -1,19 +1,13 @@
 package com.exam.shop.controller;
 
 import com.exam.shop.domain.dto.OrderSearchCondition;
-import com.exam.shop.domain.dto.OrdersDto;
 import com.exam.shop.service.ItemService;
 import com.exam.shop.service.MemberService;
 import com.exam.shop.service.OrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,12 +39,14 @@ public class OrdersController {
     public String ordersView(Model model, @ModelAttribute("orderSearch") OrderSearchCondition condition){
 
         model.addAttribute("orderSearch",condition);
-        List<OrdersDto> ordersDtos = ordersService.searchByCondition(condition);
-        for (OrdersDto ordersDto : ordersDtos) {
-            System.out.println("ordersDto = " + ordersDto);
-        }
-        model.addAttribute("orders",ordersDtos);
+        model.addAttribute("orders",ordersService.searchOrdersWithItems(condition));
 
         return "order/orderList";
+    }
+
+    @PostMapping("/orders/{ordersId}/cancel")
+    public String ordersCancel(@PathVariable(name = "ordersId") Long ordersId){
+        ordersService.ordersCancel(ordersId);
+        return "redirect:/";
     }
 }

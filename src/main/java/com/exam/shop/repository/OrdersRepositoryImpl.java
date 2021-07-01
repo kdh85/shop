@@ -43,7 +43,8 @@ public class OrdersRepositoryImpl implements OrdersRepositoryCustom {
                 .join(orders.member, member)
                 .where(
                         usernameEq(condition.getMemberName()),
-                        orderStatusEq(condition.getOrderStatus())
+                        orderStatusEq(condition.getOrderStatus()),
+                        orderIdEq(condition.getOrderId())
                 )
                 .fetch();
 
@@ -138,4 +139,7 @@ public class OrdersRepositoryImpl implements OrdersRepositoryCustom {
         return orderStatus != null ? orders.orderStatus.eq(orderStatus) : null;
     }
 
+    private BooleanExpression orderIdEq(Long orderId) {
+        return orderId != null ? orders.id.eq(orderId) : null;
+    }
 }
