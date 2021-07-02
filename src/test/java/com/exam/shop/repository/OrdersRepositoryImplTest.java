@@ -4,10 +4,7 @@ import com.exam.shop.domain.dto.ItemForm;
 import com.exam.shop.domain.dto.OrderSearchCondition;
 import com.exam.shop.domain.dto.OrdersDto;
 import com.exam.shop.domain.dto.OrdersItemDto;
-import com.exam.shop.domain.entity.Member;
-import com.exam.shop.domain.entity.OrderStatus;
-import com.exam.shop.domain.entity.OrdersItem;
-import com.exam.shop.domain.entity.QOrders;
+import com.exam.shop.domain.entity.*;
 import com.exam.shop.domain.entity.itemtype.Book;
 import com.exam.shop.service.OrdersService;
 import com.querydsl.core.QueryResults;
@@ -16,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -52,18 +48,40 @@ class OrdersRepositoryImplTest {
         memberRepository.save(Member.makeMember("user0", 11));
 
         ItemForm itemForm = new ItemForm();
-        itemForm.setName("book1");
+        itemForm.setName("testbook1");
         itemForm.setPrice(10000);
         itemForm.setStockQuantity(100);
         itemForm.setAuthor("author");
         itemForm.setIsbn("isbn0001");
         itemRepository.save(Book.createBook(itemForm));
 
-        searchOrdersTest();
+        ItemForm itemForm2 = new ItemForm();
+        itemForm2.setName("testbook2");
+        itemForm2.setPrice(20000);
+        itemForm2.setStockQuantity(200);
+        itemForm2.setAuthor("author2");
+        itemForm2.setIsbn("isbn0002");
+        itemRepository.save(Book.createBook(itemForm2));
+
+        Member findMember = memberRepository.findByUsername("user0");
+        Optional<Book> findItem = itemRepository.findBookByItemName("testbook1");
+        ordersService.ordersCreate(findMember.getId(), findItem.get().getId(), 10);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        Member findMember2 = memberRepository.findByUsername("user0");
+        Optional<Book> findItem2 = itemRepository.findBookByItemName("testbook2");
+        ordersService.ordersCreate(findMember2.getId(), findItem2.get().getId(), 20);
+
+        entityManager.flush();
+        entityManager.clear();
+
     }
 
     @Test
     void searchOrdersByConditionTest() {
+
         OrderSearchCondition condition = new OrderSearchCondition();
         condition.setMemberName("user0");
         condition.setOrderStatus(OrderStatus.COMPLETE);
@@ -71,17 +89,12 @@ class OrdersRepositoryImplTest {
         List<OrdersDto> ordersDto = ordersRepository.searchByCondition(condition);
         for (OrdersDto dto : ordersDto) {
             System.out.println("dto = " + dto.getName());
+            assertThat(dto.getName()).isEqualTo("user0");
         }
     }
 
     @Test
     void searchOrdersTest() {
-
-        Member findMember = memberRepository.findByUsername("user0");
-        Optional<Book> findItem = itemRepository.findBookByItemName("book1");
-
-        Long orderId = ordersService.ordersCreate(findMember.getId(), findItem.get().getId(), 10);
-        System.out.println("orderId = " + orderId);
 
         OrderSearchCondition condition = new OrderSearchCondition();
         condition.setMemberName("user0");
@@ -95,7 +108,6 @@ class OrdersRepositoryImplTest {
     }
 
     @Test
-    @Commit
     void searchOrdersItem() {
         OrderSearchCondition condition = new OrderSearchCondition();
         condition.setMemberName("user0");
@@ -111,7 +123,7 @@ class OrdersRepositoryImplTest {
             System.out.println("ordersItem = " + ordersItem.getItem().getItemName());
         }
 
-        assertThat(ordersItems).extracting(ordersItem -> ordersItem.getItem().getItemName()).containsExactly("book1");
+        assertThat(ordersItems).extracting(ordersItem -> ordersItem.getItem().getItemName()).containsExactly("testbook1");
     }
 
     @Test
@@ -141,10 +153,27 @@ class OrdersRepositoryImplTest {
                 );
 
         ordersDtos.forEach(o->o.setOrderItems(ordersItemMap.get(o.getId())));
-        System.out.println(" ============================================================ ");
+
+        int idx = 1;
         for(OrdersDto o :  ordersDtos){
-            System.out.println("o = " + o);
-            assertThat(o.getOrderItems()).extracting("itemName").containsExactly("book1");
+            assertThat(o.getOrderItems()).extracting("itemName").containsExactly("testbook"+idx);
+            idx++;
+        }
+    }
+
+    @Test
+    void nPlusOneTest() {
+        System.out.println("------------------------nPlusOneTest start------------------------------");
+        List<Orders> all = ordersRepository.findAll();
+
+        for (Orders orders : all) {
+            String username = orders.getMember().getUsername();
+            System.out.println("username = " + username);
+            for (OrdersItem ordersItem : orders.getOrdersItemList()) {
+                String item = ordersItem.getItem().getItemName();
+                System.out.println("item = " + item);
+            }
+
         }
     }
 }
