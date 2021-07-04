@@ -29,9 +29,9 @@ public class Category {
     private List<Category> children = new ArrayList<>();
 
     //category 부모 생성 메소드.
-    public static Category createParent(String parnet) {
+    public static Category createParent(String categoryName) {
         Category newParent = new Category();
-        newParent.setCategoryName(parnet);
+        newParent.setCategoryName(categoryName);
         return newParent;
     }
 
