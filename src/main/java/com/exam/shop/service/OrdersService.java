@@ -26,34 +26,23 @@ public class OrdersService {
 
     @Transactional
     public Long ordersCreate(Long memberId, Long itemId, int count) {
-
-        Orders order = getOrders(memberId, itemId, count);
-
-        ordersRepository.save(order);
-
-        return order.getId();
+        return ordersRepository.save(getOrders(memberId, itemId, count)).getId();
     }
 
     private Orders getOrders(Long memberId, Long itemId, int count) {
 
-        Optional<Member> findMember = memberRepository.findById(memberId);
-
-        OrdersItem ordersItem = getOrdersItem(itemId, count);
-
         Orders order = Orders.createOrderWithItems(
-                Optional.ofNullable(findMember.get()).get(),
+                Optional.ofNullable(memberRepository.findById(memberId).get()).get(),
                 OrderStatus.COMPLETE,
-                ordersItem);
+                getOrdersItem(itemId, count));
 
         return order;
     }
 
     private OrdersItem getOrdersItem(Long itemId, int count) {
-        Optional<Item> findItem = itemRepository.findById(itemId);
-
         OrdersItem ordersItem = OrdersItem.makeOrderItem(
-                Optional.ofNullable(findItem.get()).get(),
-                Optional.ofNullable(findItem.get().getPrice()).get(),
+                Optional.ofNullable(itemRepository.findById(itemId).get()).get(),
+                Optional.ofNullable(itemRepository.findById(itemId).get().getPrice()).get(),
                 count);
         return ordersItem;
     }
