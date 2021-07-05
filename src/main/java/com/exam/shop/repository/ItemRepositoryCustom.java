@@ -9,6 +9,5 @@ import java.util.List;
 public interface ItemRepositoryCustom {
     List<ItemDto> findByItemNameList(ItemForm searchItemFrom);
     List<ItemDto> findAllByBook();
-
-    List<Book> findDType();
+    List<Book> findDType(String dType);
 }

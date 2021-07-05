@@ -57,10 +57,10 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom{
     }
 
     @Override
-    public List<Book> findDType() {
+    public List<Book> findDType(String dType) {
         return queryFactory
                 .selectFrom(book)
-                .where(book.dType.eq("Book"))
+                .where(book.dType.eq(dType))
                 .fetch();
     }
 

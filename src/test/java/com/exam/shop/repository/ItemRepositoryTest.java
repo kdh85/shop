@@ -77,10 +77,21 @@ class ItemRepositoryTest {
 
     @Test
     void discriminateTest() {
-        List<Book> dtype = itemRepository.findDType();
+        List<Book> dtype = itemRepository.findDType("Book");
         for (Book book : dtype) {
             System.out.println("book = " + book.getItemName());
             System.out.println("book = " + book.getDType());
+            book.setDType("a");
+        }
+
+        entityManager.flush();
+        entityManager.clear();
+
+        List<Book> dtype2 = itemRepository.findDType("a");
+        for (Book book : dtype2) {
+            System.out.println("book = " + book.getItemName());
+            System.out.println("book = " + book.getDType());
+
         }
     }
 }

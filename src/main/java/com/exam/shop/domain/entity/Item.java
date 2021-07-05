@@ -29,7 +29,7 @@ public abstract class Item {
 
     private int quantity;
 
-    @Column(name = "DTYPE", insertable = false, updatable = false)
+    @Column(name = "DTYPE", insertable = false, updatable = true)
     private String dType;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
