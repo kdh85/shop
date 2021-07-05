@@ -29,6 +29,9 @@ public abstract class Item {
 
     private int quantity;
 
+    @Column(name = "DTYPE", insertable = false, updatable = false)
+    private String dType;
+
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
     private List<OrdersItem> ordersItemList = new ArrayList<>();
 

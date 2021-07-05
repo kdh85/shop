@@ -40,6 +40,9 @@ class ItemRepositoryTest {
         newItem.setIsbn("test123");
 
         itemRepository.save(Book.createBook(newItem));
+
+        entityManager.flush();
+        entityManager.clear();
     }
 
     @Test
@@ -53,6 +56,7 @@ class ItemRepositoryTest {
 
     @Test
     void updateItemInfo() {
+
         ItemForm searchItem = new ItemForm();
         searchItem.setName("testbook1");
 
@@ -71,4 +75,12 @@ class ItemRepositoryTest {
     }
 
 
+    @Test
+    void discriminateTest() {
+        List<Book> dtype = itemRepository.findDType();
+        for (Book book : dtype) {
+            System.out.println("book = " + book.getItemName());
+            System.out.println("book = " + book.getDType());
+        }
+    }
 }

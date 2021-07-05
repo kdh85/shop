@@ -3,6 +3,7 @@ package com.exam.shop.repository;
 import com.exam.shop.domain.dto.ItemDto;
 import com.exam.shop.domain.dto.ItemForm;
 import com.exam.shop.domain.dto.QItemDto;
+import com.exam.shop.domain.entity.itemtype.Book;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.util.StringUtils;
@@ -53,6 +54,14 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom{
                 .from(book)
                 .fetch();
         return results;
+    }
+
+    @Override
+    public List<Book> findDType() {
+        return queryFactory
+                .selectFrom(book)
+                .where(book.dType.eq("Book"))
+                .fetch();
     }
 
     private BooleanExpression itemNameEq(String itemName) {
