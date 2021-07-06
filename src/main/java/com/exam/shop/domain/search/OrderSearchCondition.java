@@ -1,4 +1,4 @@
-package com.exam.shop.domain.dto;
+package com.exam.shop.domain.search;
 
 import com.exam.shop.domain.entity.OrderStatus;
 import lombok.Getter;

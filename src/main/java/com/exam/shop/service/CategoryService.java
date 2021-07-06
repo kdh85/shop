@@ -2,6 +2,7 @@ package com.exam.shop.service;
 
 import com.exam.shop.domain.dto.CategoryAllDto;
 import com.exam.shop.domain.dto.CategoryDto;
+import com.exam.shop.domain.dto.CategoryForm;
 import com.exam.shop.domain.entity.Category;
 import com.exam.shop.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public void createCategory(CategoryDto categoryDto){
+    public void createCategory(CategoryForm categoryForm){
+
+        CategoryDto categoryDto = createCategoryDto(categoryForm);
 
         if(categoryDto.getParentId() != null){
             Optional<Category> findParent = categoryRepository.findById(categoryDto.getParentId());
@@ -27,6 +30,13 @@ public class CategoryService {
             createParentCategory(categoryDto);
         }
 
+    }
+
+    private CategoryDto createCategoryDto(CategoryForm categoryForm) {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryName(categoryForm.getCategoryName());
+        categoryDto.setParentId(categoryForm.getParentId());
+        return categoryDto;
     }
 
     private void createChildCategory(CategoryDto categoryDto, Category findParent) {

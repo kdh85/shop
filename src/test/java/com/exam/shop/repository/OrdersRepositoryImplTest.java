@@ -1,7 +1,7 @@
 package com.exam.shop.repository;
 
 import com.exam.shop.domain.dto.ItemForm;
-import com.exam.shop.domain.dto.OrderSearchCondition;
+import com.exam.shop.domain.search.OrderSearchCondition;
 import com.exam.shop.domain.dto.OrdersDto;
 import com.exam.shop.domain.dto.OrdersItemDto;
 import com.exam.shop.domain.entity.*;

@@ -2,7 +2,7 @@ package com.exam.shop.service;
 
 import com.exam.shop.domain.dto.ItemForm;
 import com.exam.shop.domain.dto.MemberForm;
-import com.exam.shop.domain.dto.OrderSearchCondition;
+import com.exam.shop.domain.search.OrderSearchCondition;
 import com.exam.shop.domain.dto.OrdersDto;
 import com.exam.shop.domain.entity.Item;
 import com.exam.shop.domain.entity.Member;

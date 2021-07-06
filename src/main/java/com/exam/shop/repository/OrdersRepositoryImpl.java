@@ -3,6 +3,7 @@ package com.exam.shop.repository;
 import com.exam.shop.domain.dto.*;
 import com.exam.shop.domain.entity.OrderStatus;
 import com.exam.shop.domain.entity.OrdersItem;
+import com.exam.shop.domain.search.OrderSearchCondition;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;

@@ -1,6 +1,6 @@
 package com.exam.shop.controller;
 
-import com.exam.shop.domain.dto.OrderSearchCondition;
+import com.exam.shop.domain.search.OrderSearchCondition;
 import com.exam.shop.service.ItemService;
 import com.exam.shop.service.MemberService;
 import com.exam.shop.service.OrdersService;
