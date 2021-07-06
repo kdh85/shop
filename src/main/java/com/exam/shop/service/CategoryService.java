@@ -1,5 +1,6 @@
 package com.exam.shop.service;
 
+import com.exam.shop.domain.dto.CategoryAllDto;
 import com.exam.shop.domain.dto.CategoryDto;
 import com.exam.shop.domain.entity.Category;
 import com.exam.shop.repository.CategoryRepository;
@@ -41,5 +42,9 @@ public class CategoryService {
 
     public List<CategoryDto> getCategoryInfo(){
         return categoryRepository.findByTopByDto();
+    }
+
+    public List<CategoryAllDto> getCategoriesInfo() {
+        return categoryRepository.findByCategories();
     }
 }

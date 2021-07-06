@@ -1,5 +1,6 @@
 package com.exam.shop.repository;
 
+import com.exam.shop.domain.dto.CategoryAllDto;
 import com.exam.shop.domain.dto.CategoryChildDto;
 import com.exam.shop.domain.dto.CategoryDto;
 import com.exam.shop.domain.entity.Category;
@@ -14,4 +15,8 @@ public interface CategoryRepositoryCustom {
     List<CategoryDto> findByTopByDto();
 
     List<CategoryChildDto> findChildByDto();
+
+    List<CategoryDto> findByCategoriesDepth();
+
+    List<CategoryAllDto> findByCategories();
 }

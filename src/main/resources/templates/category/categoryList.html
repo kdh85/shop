@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>카테고리 ID</th>
+        <th>카테고리 명</th>
+        <th>부모 카테고리 ID</th>
+        <th>부모 카테고리 명</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="category : ${categories}">
+        <td th:text="${category.getChildId()}"></td>
+        <td th:text="${category.getChildName()}"></td>
+        <td th:text="${category.getParentId()}"></td>
+        <td th:text="${category.getParentName()}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
