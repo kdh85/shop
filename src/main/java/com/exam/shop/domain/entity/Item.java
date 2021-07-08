@@ -35,6 +35,9 @@ public abstract class Item {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
     private List<OrdersItem> ordersItemList = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Category category;
+
     public void removeQuantity(int orderQuantity){
         int currentQuantity = this.quantity - orderQuantity;
 

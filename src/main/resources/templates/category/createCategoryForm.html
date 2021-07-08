@@ -22,7 +22,7 @@
             <label th:for="city">부모 카테고리명</label>
             <select id="parentId" name="parentId" class="form-control">
                 <option value="">없음</option>
-                <option th:each="parent : ${parentCategory}"
+                <option th:each="parent : ${categories}"
                         th:value="${parent.id}"
                         th:text="${parent.categoryName}">option
                 </option>

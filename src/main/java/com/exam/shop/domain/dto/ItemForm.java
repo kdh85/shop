@@ -19,4 +19,6 @@ public class ItemForm {
     private String author;
 
     private String isbn;
+
+    private Long categoryId;
 }

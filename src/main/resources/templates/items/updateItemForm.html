@@ -10,6 +10,14 @@
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
   <form th:object="${form}" method="post" th:action>
+    <select id="categoryId" name="categoryId" class="form-control">
+      <option value="">없음</option>
+      <option th:each="children : ${categories}"
+              th:selected="${children.childId}==*{categoryId}"
+              th:value="${children.childId}"
+              th:text="${children.childName}">option
+      </option>
+    </select>
     <!-- id -->
     <input type="hidden" th:field="*{id}" />
     <div class="form-group">

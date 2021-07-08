@@ -28,6 +28,9 @@ public class Category {
     @OneToMany(mappedBy = "parent",cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Category> children = new ArrayList<>();
 
+    @OneToOne(mappedBy = "category")
+    private Item item;
+
     //category 부모 생성 메소드.
     public static Category createParent(String categoryName) {
         Category newParent = new Category();

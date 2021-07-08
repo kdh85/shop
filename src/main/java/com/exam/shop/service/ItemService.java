@@ -39,6 +39,10 @@ public class ItemService {
             itemForm.setStockQuantity(book.get().getQuantity());
             itemForm.setAuthor(book.get().getAuthor());
             itemForm.setIsbn(book.get().getIsbn());
+
+            if(Optional.ofNullable(book.get().getCategory()).isPresent()){
+                itemForm.setCategoryId(book.get().getCategory().getId());
+            }
         }
 
         return itemForm;
@@ -61,5 +65,15 @@ public class ItemService {
 
     public Optional<Book> findByBook(String book) {
         return itemRepository.findBookByItemName(book);
+    }
+
+    @Transactional
+    public void itemCreateWithCategory(ItemForm itemForm) {
+        itemRepository.save(Book.createBookWithCategory(itemForm));
+    }
+
+    @Transactional
+    public void itemUpdateWithCategory(Long itemId, ItemForm itemForm) {
+        Book.updateBookWithCategory(itemRepository.findBookById(itemId), itemForm);
     }
 }

@@ -1,6 +1,7 @@
 package com.exam.shop.service;
 
 import com.exam.shop.domain.dto.CategoryAllDto;
+import com.exam.shop.domain.dto.CategoryChildDto;
 import com.exam.shop.domain.dto.CategoryDto;
 import com.exam.shop.domain.dto.CategoryForm;
 import com.exam.shop.domain.entity.Category;
@@ -50,11 +51,15 @@ public class CategoryService {
         categoryRepository.save(findParent);
     }
 
-    public List<CategoryDto> getCategoryInfo(){
+    public List<CategoryDto> getCategoryTopInfo(){
         return categoryRepository.findByTopByDto();
     }
 
     public List<CategoryAllDto> getCategoriesInfo() {
         return categoryRepository.findByCategories();
+    }
+
+    public List<CategoryChildDto> getCategoryChildInfo() {
+        return categoryRepository.findChildByDto();
     }
 }

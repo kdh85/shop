@@ -1,6 +1,7 @@
 package com.exam.shop.controller;
 
 import com.exam.shop.domain.dto.ItemForm;
+import com.exam.shop.service.CategoryService;
 import com.exam.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,13 @@ public class ItemController {
 
     private final ItemService itemService;
 
+    private final CategoryService categoryService;
+
     @GetMapping(value = "/items/new")
     public String itemCreateView(Model model){
+
         model.addAttribute("itemForm",new ItemForm());
+        model.addAttribute("categories", categoryService.getCategoryChildInfo());
         return "items/createItemForm";
     }
 
@@ -31,7 +36,8 @@ public class ItemController {
             return "items/createItemForm";
         }
 
-        itemService.itemCreate(itemForm);
+        //itemService.itemCreate(itemForm);
+        itemService.itemCreateWithCategory(itemForm);
         return "redirect:/";
     }
 
@@ -44,7 +50,7 @@ public class ItemController {
     @GetMapping(value = "/items/{itemId}/edit")
     public String itemUpdateView(Model model, @PathVariable("itemId") Long itemId){
         model.addAttribute("form",itemService.getItemById(itemId));
-
+        model.addAttribute("categories", categoryService.getCategoryChildInfo());
         return "items/updateItemForm";
     }
 
@@ -55,7 +61,8 @@ public class ItemController {
             return "items/updateItemForm";
         }
 
-        itemService.itemUpdate(itemId, itemForm);
+        //itemService.itemUpdate(itemId, itemForm);
+        itemService.itemUpdateWithCategory(itemId, itemForm);
 
         return "redirect:/";
     }

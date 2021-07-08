@@ -20,7 +20,7 @@ public class CategoryController {
     @GetMapping(value = "/category/new")
     public String createCategoryView(Model model) {
         model.addAttribute("categoryForm",new CategoryForm());
-        model.addAttribute("parentCategory",categoryService.getCategoryInfo());
+        model.addAttribute("parentCategory",categoryService.getCategoryTopInfo());
         return "category/createCategoryForm";
     }
 
