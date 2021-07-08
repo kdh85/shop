@@ -1,14 +1,15 @@
 package com.exam.shop.domain.entity.itemtype;
 
 import com.exam.shop.domain.dto.ItemForm;
-import com.exam.shop.domain.entity.Category;
 import com.exam.shop.domain.entity.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Optional;
 
 @Entity
@@ -56,10 +57,7 @@ public class Book extends Item {
         newBook.setQuantity(itemForm.getStockQuantity());
         newBook.setAuthor(itemForm.getAuthor());
         newBook.setIsbn(itemForm.getIsbn());
-
-        Category category = getCategory(itemForm);
-
-        newBook.setCategory(category);
+        newBook.setCategoryId(itemForm.getCategoryId());
 
         return newBook;
     }
@@ -73,18 +71,11 @@ public class Book extends Item {
             updateBook.setQuantity(itemForm.getStockQuantity());
             updateBook.setAuthor(itemForm.getAuthor());
             updateBook.setIsbn(itemForm.getIsbn());
-
-            Category category = getCategory(itemForm);
-            updateBook.setCategory(category);
+            updateBook.setCategoryId(itemForm.getCategoryId());
 
             return updateBook;
         }
         return new Book();
     }
 
-    private static Category getCategory(ItemForm itemForm) {
-        Category category = new Category();
-        category.setId(itemForm.getCategoryId());
-        return category;
-    }
 }

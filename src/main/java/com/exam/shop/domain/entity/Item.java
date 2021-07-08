@@ -29,14 +29,15 @@ public abstract class Item {
 
     private int quantity;
 
-    @Column(name = "DTYPE", insertable = false, updatable = true)
+    @Column(name = "DTYPE", insertable = false, updatable = false)
     private String dType;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<OrdersItem> ordersItemList = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Category category;
+    //@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private Category category;
+    private Long categoryId;
 
     public void removeQuantity(int orderQuantity){
         int currentQuantity = this.quantity - orderQuantity;

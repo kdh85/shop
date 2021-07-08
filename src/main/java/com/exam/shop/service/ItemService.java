@@ -4,6 +4,7 @@ import com.exam.shop.domain.dto.ItemDto;
 import com.exam.shop.domain.dto.ItemForm;
 import com.exam.shop.domain.entity.Item;
 import com.exam.shop.domain.entity.itemtype.Book;
+import com.exam.shop.repository.CategoryRepository;
 import com.exam.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
+    private final CategoryRepository categoryRepository;
+
     @Transactional
     public void itemCreate(ItemForm itemForm) {
         Book newBook = Book.createBook(itemForm);
@@ -30,23 +33,24 @@ public class ItemService {
     }
 
     public ItemForm getItemById(Long itemId) {
-        Optional<Book> book = itemRepository.findBookById(itemId);
+        return getItemForm(itemRepository.findBookById(itemId));
+    }
 
+    private ItemForm getItemForm(Optional<Book> book) {
+        Optional<Optional<Book>> book1 = Optional.ofNullable(book);
         ItemForm itemForm = new ItemForm();
-        if(book.isPresent()){
+
+        if (book.isPresent()) {
             itemForm.setName(book.get().getItemName());
             itemForm.setPrice(book.get().getPrice());
             itemForm.setStockQuantity(book.get().getQuantity());
             itemForm.setAuthor(book.get().getAuthor());
             itemForm.setIsbn(book.get().getIsbn());
-
-            if(Optional.ofNullable(book.get().getCategory()).isPresent()){
-                itemForm.setCategoryId(book.get().getCategory().getId());
-            }
+            itemForm.setCategoryId(book.get().getCategoryId());
         }
-
         return itemForm;
     }
+
 
     @Transactional
     public void itemUpdate(Long itemId, ItemForm itemForm) {
