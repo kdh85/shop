@@ -20,7 +20,7 @@ class BookTest {
 
         Book bookWithCategory = Book.createBookWithCategory(itemForm);
 
-        assertThat(bookWithCategory.getCategory().getId()).isEqualTo(1L);
+        assertThat(bookWithCategory.getCategoryId()).isEqualTo(1L);
     }
 
     @Test
@@ -38,6 +38,6 @@ class BookTest {
         itemForm.setCategoryId(2l);
         Book.updateBookWithCategory(java.util.Optional.of(bookWithCategory),itemForm);
 
-        assertThat(bookWithCategory.getCategory().getId()).isEqualTo(2L);
+        assertThat(bookWithCategory.getCategoryId()).isEqualTo(2L);
     }
 }
