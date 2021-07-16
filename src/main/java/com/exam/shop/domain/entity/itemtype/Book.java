@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Optional;
 
 @Entity
@@ -18,9 +16,6 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends Item {
 
-    @Id
-    @GeneratedValue
-    private Long id;
     private String author;
     private String isbn;
 
