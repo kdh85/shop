@@ -27,7 +27,7 @@ public class UserDetailsVO implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getUserPw();
     }
 
     @Override
